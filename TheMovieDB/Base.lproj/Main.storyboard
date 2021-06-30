@@ -101,6 +101,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="vk9-Fz-9cH"/>
+                    <connections>
+                        <outlet property="searchBar" destination="4RL-p7-SdG" id="sSM-ph-Qsg"/>
+                        <outlet property="tableView" destination="j5K-5P-RDa" id="8eN-Xc-B7L"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
