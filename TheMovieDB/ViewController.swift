@@ -15,6 +15,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var popularMovies = [String]()
     var playingMovies = [String]()
     
+    let headerTitles: [String] = ["Popular Movies", "Now Playing"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -29,6 +31,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return headerTitles[section]
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
