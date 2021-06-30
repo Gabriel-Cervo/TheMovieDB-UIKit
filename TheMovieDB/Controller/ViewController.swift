@@ -12,8 +12,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
-    var popularMovies = [String]()
-    var playingMovies = [String]()
+    var popularMovies: [Movie] = []
+    var playingMovies: [Movie] = []
     
     let headerTitles: [String] = ["Popular Movies", "Now Playing"]
     
@@ -25,6 +25,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! MovieTableViewCell
+        let movie: Movie = indexPath.section == 0 ? popularMovies[indexPath.row] : playingMovies[indexPath.row]
+        
+        cell.configure(image: UIImage(systemName: "star")!, title: movie.title, description: movie.overview, rating: movie.vote_average)
         
         return cell
     }
