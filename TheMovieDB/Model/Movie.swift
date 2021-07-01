@@ -12,5 +12,5 @@ struct Movie: Decodable {
     var overview: String
     var poster_path: String
     var vote_average: Double
-    var genres: [Genre]
+//    var genres: [Genre]
 }

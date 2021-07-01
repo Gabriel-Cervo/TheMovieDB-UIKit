@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Movies-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TheMovieDB" customModuleProvider="target" sceneMemberID="viewController">
@@ -100,7 +100,7 @@
                             <constraint firstItem="j5K-5P-RDa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="uM3-HA-WBI"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="vk9-Fz-9cH"/>
+                    <navigationItem key="navigationItem" title="Movies" id="vk9-Fz-9cH"/>
                     <connections>
                         <outlet property="searchBar" destination="4RL-p7-SdG" id="sSM-ph-Qsg"/>
                         <outlet property="tableView" destination="j5K-5P-RDa" id="8eN-Xc-B7L"/>

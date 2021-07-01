@@ -21,6 +21,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+            
+        
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/popular?api_key=a0302297acdf27ae50ba169f78c8ed74") { [weak self] movies in
+            self?.popularMovies = movies
+            self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+        
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74") { [weak self] movies in
+            self?.playingMovies = movies
+            self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
