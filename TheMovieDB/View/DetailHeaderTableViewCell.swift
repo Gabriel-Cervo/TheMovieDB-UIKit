@@ -13,9 +13,10 @@ class DetailHeaderTableViewCell: UITableViewCell {
     @IBOutlet weak var movieTags: UILabel!
     @IBOutlet weak var movieRating: UILabel!
     
-    func configure(imageLink: String, title: String, rating: Double) {
+    func configure(imageLink: String, title: String, rating: Double, tags: [Genre]) {
         self.movieTitle.text = title
         self.movieRating.text = "\(rating)"
         self.movieImageView.imageFromServerURL(imageLink, placeHolder: UIImage(named: "imagePlaceholder"))
+        self.movieTags.text = tags.map { String($0.name) }.joined(separator: ", ")
     }
 }

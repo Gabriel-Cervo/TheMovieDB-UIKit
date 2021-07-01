@@ -18,7 +18,7 @@ struct DataManager {
             
             let decoder = JSONDecoder()
             guard let decodedMovies: DataModel = try? decoder.decode(DataModel.self, from: data) else {
-                print("Cannot convert to [Movie]")
+                print("Cannot convert to [DataModel]")
                 return
             }
             
@@ -30,6 +30,25 @@ struct DataManager {
                 }
                 
                 completionHandler(movies)
+            }
+        }
+        task.resume()
+    }
+    
+    func getGenres(completionHandler: @escaping (_ genres: [Genre]) -> Void) -> Void {
+        guard let url = URL(string: "https://api.themoviedb.org/3/genre/movie/list?api_key=a0302297acdf27ae50ba169f78c8ed74") else { fatalError("Cannot load from genres URL") }
+                
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data else { return }
+                        
+            let decoder = JSONDecoder()
+            guard let decodedGenres: GenreModel = try? decoder.decode(GenreModel.self, from: data) else {
+                print("Cannot convert to [GenreModel]")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                completionHandler(decodedGenres.genres)
             }
         }
         task.resume()

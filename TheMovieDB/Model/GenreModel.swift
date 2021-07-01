@@ -1,5 +1,5 @@
 //
-//  Genre.swift
+//  GenreModel.swift
 //  TheMovieDB
 //
 //  Created by Joao Gabriel Dourado Cervo on 30/06/21.
@@ -7,7 +7,6 @@
 
 import Foundation
 
-struct Genre: Decodable {
-    var id: Int
-    var name: String
+struct GenreModel: Decodable {
+    var genres: [Genre]
 }
