@@ -16,12 +16,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="4RL-p7-SdG">
-                                <rect key="frame" x="15" y="156" width="384" height="51"/>
+                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="4RL-p7-SdG">
+                                <rect key="frame" x="15" y="140" width="384" height="51"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="j5K-5P-RDa">
-                                <rect key="frame" x="0.0" y="219" width="414" height="677"/>
+                                <rect key="frame" x="0.0" y="203" width="414" height="693"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MovieCell" rowHeight="142" id="mfg-gt-TXf" customClass="MovieTableViewCell" customModule="TheMovieDB" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="24.5" width="414" height="142"/>
@@ -97,7 +97,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="j5K-5P-RDa" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="30P-sX-AoW"/>
-                            <constraint firstItem="4RL-p7-SdG" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="EpU-Zj-3mc"/>
+                            <constraint firstItem="4RL-p7-SdG" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="EpU-Zj-3mc"/>
                             <constraint firstItem="j5K-5P-RDa" firstAttribute="top" secondItem="4RL-p7-SdG" secondAttribute="bottom" constant="12" id="L3c-nh-7vX"/>
                             <constraint firstAttribute="bottom" secondItem="j5K-5P-RDa" secondAttribute="bottom" id="NFB-g3-Jyv"/>
                             <constraint firstItem="4RL-p7-SdG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="VO5-Yt-56l"/>
