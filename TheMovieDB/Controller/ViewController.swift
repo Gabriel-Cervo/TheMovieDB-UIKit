@@ -38,7 +38,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! MovieTableViewCell
         let movie: Movie = indexPath.section == 0 ? popularMovies[indexPath.row] : playingMovies[indexPath.row]
         
-        cell.configure(image: UIImage(systemName: "star")!, title: movie.title, description: movie.overview, rating: movie.vote_average)
+        cell.configure(imageLink: "https://image.tmdb.org/t/p/original/\(movie.poster_path)", title: movie.title, description: movie.overview, rating: movie.vote_average)
         
         return cell
     }

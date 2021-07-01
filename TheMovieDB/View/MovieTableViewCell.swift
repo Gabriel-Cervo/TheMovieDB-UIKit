@@ -21,11 +21,10 @@ class MovieTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func configure(image: UIImage, title: String, description: String, rating: Double) {
-        self.imageView?.image = image
+    func configure(imageLink: String, title: String, description: String, rating: Double) {
         self.movieTitle.text = title
         self.movieDescription.text = description
         self.movieRating.text = "\(rating)"
+        self.movieImageView.imageFromServerURL(imageLink, placeHolder: UIImage(named: "imagePlaceholder"))
     }
-
 }
