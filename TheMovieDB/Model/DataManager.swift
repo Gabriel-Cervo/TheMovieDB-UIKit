@@ -10,7 +10,7 @@ import UIKit
 struct DataManager {
     static var shared = DataManager()
         
-    func getData(from url: String, completionHandler: @escaping (_ movies: [Movie]) -> Void) -> Void {
+    func getData(from url: String, startingItem: Int, maxNumberOfItens: Int, completionHandler: @escaping (_ movies: [Movie]) -> Void) -> Void {
         guard let url = URL(string: url) else { fatalError("Cannot load from url: \(url)") }
                 
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
@@ -23,7 +23,13 @@ struct DataManager {
             }
             
             DispatchQueue.main.async {
-                completionHandler(decodedMovies.results)
+                var movies: [Movie] = []
+
+                for index in startingItem..<maxNumberOfItens {
+                    movies.append(decodedMovies.results[index])
+                }
+                
+                completionHandler(movies)
             }
         }
         task.resume()

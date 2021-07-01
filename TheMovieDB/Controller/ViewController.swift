@@ -23,12 +23,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
             
         
-        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/popular?api_key=a0302297acdf27ae50ba169f78c8ed74") { [weak self] movies in
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/popular?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: 2) { [weak self] movies in
             self?.popularMovies = movies
             self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
         
-        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74") { [weak self] movies in
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: 5) { [weak self] movies in
             self?.playingMovies = movies
             self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
         }
@@ -49,6 +49,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return headerTitles[section]
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.contentView.backgroundColor = .white
+        header.textLabel?.textColor = UIColor.black
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 35
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
