@@ -10,6 +10,7 @@ import UIKit
 struct DataManager {
     static var shared = DataManager()
         
+    //MARK: GetData Method
     func getData(from url: String, startingItem: Int, maxNumberOfItens: Int, completionHandler: @escaping (_ movies: [Movie]) -> Void) -> Void {
         guard let url = URL(string: url) else { fatalError("Cannot load from url: \(url)") }
                 
@@ -39,6 +40,7 @@ struct DataManager {
         task.resume()
     }
     
+    //MARK: GetGenres Method
     func getGenres(completionHandler: @escaping (_ genres: [Genre]) -> Void) -> Void {
         guard let url = URL(string: "https://api.themoviedb.org/3/genre/movie/list?api_key=a0302297acdf27ae50ba169f78c8ed74") else { fatalError("Cannot load from genres URL") }
                 

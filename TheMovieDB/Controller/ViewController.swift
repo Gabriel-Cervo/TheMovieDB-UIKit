@@ -7,8 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
@@ -25,28 +24,31 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        searchBar.delegate = self
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshTableView), for: .valueChanged)
         tableView.refreshControl = refreshControl
         
-        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/popular?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: 2) { [weak self] movies in
-            self?.popularMovies = movies
-            self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-        
-        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: initialOffset, maxNumberOfItens: limitOffset) { [weak self] movies in
-            self?.playingMovies = movies
-            self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
-        }
+        loadAllMovies()
     }
     
+    //MARK: TableView Methods
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == self.playingMovies.count - 1 {
             self.loadMore()
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! MovieTableViewCell
+        
+        if indexPath.section == 0 && popularMovies.count == 0 {
+            return cell
+        }
+        
+        if indexPath.section == 1 && playingMovies.count == 0 {
+            return cell
+        }
+        
         let movie: Movie = indexPath.section == 0 ? popularMovies[indexPath.row] : playingMovies[indexPath.row]
         
         cell.configure(imageLink: movie.poster_path, title: movie.title, description: movie.overview, rating: movie.vote_average)
@@ -98,6 +100,52 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         refreshControl.endRefreshing()
     }
     
+    // MARK: SearchBar Implementation
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/popular?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: itensLimit) { [weak self] movies in
+            guard let text = searchBar.text?.lowercased(), text != "" else {
+                self?.loadPopularMovies()
+                return
+            }
+            
+            self?.popularMovies = movies.filter { $0.title.lowercased().contains(text) }
+            self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+        
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: itensLimit) { [weak self] movies in
+            guard let text = searchBar.text?.lowercased(), text != "" else {
+                self?.resetOffsets()
+                self?.loadPlayingMovies()
+                return
+            }
+            
+            self?.playingMovies = movies.filter { $0.title.lowercased().contains(text) }
+            self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        }
+
+        tableView.reloadData()
+    }
+    
+    //MARK: Custom Methods
+    func loadAllMovies() {
+        loadPopularMovies()
+        loadPlayingMovies()
+    }
+    
+    func loadPopularMovies() {
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/popular?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: 2) { [weak self] movies in
+            self?.popularMovies = movies
+            self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+    }
+    
+    func loadPlayingMovies() {
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: 5) { [weak self] movies in
+            self?.playingMovies = movies
+            self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        }
+    }
+    
     func loadMore() {
         if limitOffset * 2 > itensLimit {
             return
@@ -112,6 +160,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
             self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
         }
+    }
+    
+    func resetOffsets() {
+        initialOffset = 0
+        limitOffset = 5
     }
 }
 

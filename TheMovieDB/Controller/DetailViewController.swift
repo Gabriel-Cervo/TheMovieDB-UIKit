@@ -26,7 +26,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    
+    //MARK: TableView Methods
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let movie = movie else { fatalError("no movie found") }
 

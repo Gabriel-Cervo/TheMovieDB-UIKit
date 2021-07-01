@@ -9,6 +9,7 @@ import UIKit
 
 let imageCache = NSCache<NSString, UIImage>()
 
+// Load image from a URL, otherwise, use the placeholder
 extension UIImageView {
     func imageFromServerURL(_ url: String, placeHolder: UIImage?) {
         let imageURL = "https://image.tmdb.org/t/p/original/\(url)"
