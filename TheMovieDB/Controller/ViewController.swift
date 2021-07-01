@@ -21,7 +21,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-            
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshTableView), for: .valueChanged)
+        tableView.refreshControl = refreshControl
         
         DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/popular?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: 2) { [weak self] movies in
             self?.popularMovies = movies
@@ -79,6 +82,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         guard let nextVC = segue.destination as? DetailViewController else { return }
         nextVC.movie = movie
+    }
+    
+    @objc func refreshTableView(refreshControl: UIRefreshControl) {
+        self.tableView.reloadData()
+        
+        refreshControl.endRefreshing()
     }
 }
 

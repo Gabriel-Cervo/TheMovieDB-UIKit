@@ -17,7 +17,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        
+                
         if let movie = movie {
             DataManager.shared.getGenres() { [weak self] allGenres in
                 self?.genres = allGenres.filter { movie.genre_ids.contains($0.id) }
