@@ -16,13 +16,10 @@ struct DataManager {
                 
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else { return }
-            
-            print(data)
-            
+                        
             let decoder = JSONDecoder()
             guard let decodedMovies: DataModel = try? decoder.decode(DataModel.self, from: data) else {
-                print(url)
-                print("Cannot convert to DataModel")
+                print("Cannot convert to DataModel. URL: [\(url)]")
                 return
             }
             
@@ -52,7 +49,7 @@ struct DataManager {
                         
             let decoder = JSONDecoder()
             guard let decodedGenres: GenreModel = try? decoder.decode(GenreModel.self, from: data) else {
-                print("Cannot convert to GenreModel")
+                print("Cannot convert to GenreModel. URL: [\(url)]")
                 return
             }
             
