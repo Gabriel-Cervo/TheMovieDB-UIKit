@@ -38,7 +38,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! MovieTableViewCell
         let movie: Movie = indexPath.section == 0 ? popularMovies[indexPath.row] : playingMovies[indexPath.row]
         
-        cell.configure(imageLink: "https://image.tmdb.org/t/p/original/\(movie.poster_path)", title: movie.title, description: movie.overview, rating: movie.vote_average)
+        cell.configure(imageLink: movie.poster_path, title: movie.title, description: movie.overview, rating: movie.vote_average)
         
         return cell
     }
@@ -67,6 +67,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         return playingMovies.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let movie: Movie = indexPath.section == 0 ? popularMovies[indexPath.row] : playingMovies[indexPath.row]
+        performSegue(withIdentifier: "toDetails", sender: movie)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let movie = sender as? Movie else { return }
+        
+        guard let nextVC = segue.destination as? DetailViewController else { return }
+        nextVC.movie = movie
     }
 }
 

@@ -10,7 +10,9 @@ import UIKit
 let imageCache = NSCache<NSString, UIImage>()
 
 extension UIImageView {
-    func imageFromServerURL(_ imageURL: String, placeHolder: UIImage?) {
+    func imageFromServerURL(_ url: String, placeHolder: UIImage?) {
+        let imageURL = "https://image.tmdb.org/t/p/original/\(url)"
+        
         self.image = placeHolder
                     
         if let cachedImage = imageCache.object(forKey: NSString(string: imageURL)) {
