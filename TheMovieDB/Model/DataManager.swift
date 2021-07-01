@@ -26,6 +26,10 @@ struct DataManager {
                 var movies: [Movie] = []
 
                 for index in startingItem..<maxNumberOfItens {
+                    if index >= decodedMovies.results.count - 1 {
+                        break
+                    }
+                    
                     movies.append(decodedMovies.results[index])
                 }
                 

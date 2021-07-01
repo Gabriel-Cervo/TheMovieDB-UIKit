@@ -17,6 +17,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let headerTitles: [String] = ["Popular Movies", "Now Playing"]
     
+    var initialOffset = 0
+    var limitOffset = 5
+    var itensLimit = 50
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -31,13 +35,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
         
-        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: 5) { [weak self] movies in
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: initialOffset, maxNumberOfItens: limitOffset) { [weak self] movies in
             self?.playingMovies = movies
             self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == self.playingMovies.count - 1 {
+            self.loadMore()
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! MovieTableViewCell
         let movie: Movie = indexPath.section == 0 ? popularMovies[indexPath.row] : playingMovies[indexPath.row]
         
@@ -88,6 +96,22 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tableView.reloadData()
         
         refreshControl.endRefreshing()
+    }
+    
+    func loadMore() {
+        if limitOffset * 2 > itensLimit {
+            return
+        }
+        
+        initialOffset = limitOffset + 1
+        limitOffset *= limitOffset
+        
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: initialOffset, maxNumberOfItens: limitOffset) { [weak self] movies in
+            for movie in movies {
+                self?.playingMovies.append(movie)
+            }
+            self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        }
     }
 }
 
