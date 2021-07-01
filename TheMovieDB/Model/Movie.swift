@@ -10,7 +10,7 @@ import UIKit
 struct Movie: Decodable {
     var title: String
     var overview: String
-    var poster_path: String
+    var poster_path: String?
     var vote_average: Double
     var genre_ids: [Int]
 }

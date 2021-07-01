@@ -51,7 +51,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let movie: Movie = indexPath.section == 0 ? popularMovies[indexPath.row] : playingMovies[indexPath.row]
         
-        cell.configure(imageLink: movie.poster_path, title: movie.title, description: movie.overview, rating: movie.vote_average)
+        cell.configure(imageLink: movie.poster_path ?? "", title: movie.title, description: movie.overview, rating: movie.vote_average)
         
         return cell
     }
@@ -102,28 +102,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // MARK: SearchBar Implementation
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/popular?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: itensLimit) { [weak self] movies in
-            guard let text = searchBar.text?.lowercased(), text != "" else {
-                self?.loadPopularMovies()
-                return
-            }
-            
-            self?.popularMovies = movies.filter { $0.title.lowercased().contains(text) }
-            self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        guard let text = searchBar.text, text != "" else {
+            self.loadPopularMovies()
+            return
         }
         
-        DataManager.shared.getData(from: "https://api.themoviedb.org/3/movie/now_playing?api_key=a0302297acdf27ae50ba169f78c8ed74", startingItem: 0, maxNumberOfItens: itensLimit) { [weak self] movies in
-            guard let text = searchBar.text?.lowercased(), text != "" else {
-                self?.resetOffsets()
-                self?.loadPlayingMovies()
-                return
-            }
-            
-            self?.playingMovies = movies.filter { $0.title.lowercased().contains(text) }
-            self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        DataManager.shared.getData(from: "https://api.themoviedb.org/3/search/movie?api_key=a0302297acdf27ae50ba169f78c8ed74&query=\(text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)", startingItem: 0, maxNumberOfItens: itensLimit) { [weak self] movies in
+            self?.popularMovies = movies
+            self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
-
-        tableView.reloadData()
     }
     
     //MARK: Custom Methods

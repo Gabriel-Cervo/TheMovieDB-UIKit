@@ -32,7 +32,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell") as! DetailHeaderTableViewCell
-            cell.configure(imageLink: movie.poster_path, title: movie.title, rating: movie.vote_average, tags: genres)
+            cell.configure(imageLink: movie.poster_path ?? "", title: movie.title, rating: movie.vote_average, tags: genres)
             
             return cell
         }
